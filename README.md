@@ -11,31 +11,31 @@ This is a personal project i've done for fun. and thought would be cool.
 Uses a raspberry pi 4. has 2 power supplies. USB-C and IEC C13/14. As well as a battery backup using a 12v 12ah lead acid battery.
 
 Types of technologies used:
-Software PWM
-1-Wire
-Serial communication
+- Software PWM
+- 1-Wire
+- Serial communication
 
 ---
 
 Current functionality:
-Can tell the time.
-Mouth lights up different colours.
-Has a fun light sequence when you turn it on/off with the keyswitch.
-Shows you temperature from it's "antennae"
+- Can tell the time.
+- Mouth lights up different colours.
+- Has a fun light sequence when you turn it on/off with the keyswitch.
+- Shows you temperature from it's "antennae"
 
 Future plans:
-To be decided
+- To be decided
 
 Capabilities/features:
-Motion sensor
-input power type sensors
-5 buttons
-1 keyswitch
-dual/redundant power inputs
-all lights are pwm controlled
-RGBW mouth
-Internet connected
-tm1637 4 digit 7 segment display
+- Motion sensor
+- input power type sensors
+- 5 buttons
+- 1 keyswitch
+- dual/redundant power inputs
+- all lights are pwm controlled
+- RGBW mouth
+- Internet connected
+- tm1637 4 digit 7 segment display
 
 ---
 
