@@ -1,5 +1,10 @@
-Details and images to be added soon
+further details and images to be added soon
+
+---
+
 ![Robot Head Final Product](https://github.com/HariComputes/Robot-Head/blob/main/Images/IMG-20230408-WA0000.jpg?raw=true "Robot Head")
+
+---
 
 Uses a raspberry pi 4. has 2 power supplies. USB-C and IEC C13/14. As well as a battery backup using a 12v 12ah lead acid battery.
 
@@ -8,10 +13,11 @@ Software PWM
 1-Wire
 Serial communication
 
+---
 
 Pi pins/usage below:
 
-GPIO 2 (I2C1 SDA)		Switch LED 1 - 5th button. Blue
+```GPIO 2 (I2C1 SDA)		Switch LED 1 - 5th button. Blue
 GPIO 3 (I2C1 SCL)		Switch LED 2 - 4th button. White
 GPIO 4 (GPCLK0)			Thermometer
 Ground
@@ -49,4 +55,4 @@ GPIO 12 (PWM0)			Button 1 - 1st button. Blue
 Ground
 GPIO 16					Relay 1 - USB C
 GPIO 20 (PCM DIN)		Switch LED 5 - 1st button. Blue
-GPIO 21 (PCM DOUT)		EyeLEDs 2 - Left Eye
+GPIO 21 (PCM DOUT)		EyeLEDs 2 - Left Eye```
