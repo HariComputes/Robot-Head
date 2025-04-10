@@ -1,5 +1,7 @@
 further details and images to be added soon
 
+This is a personal project i've done for fun. and thought would be cool.
+
 ---
 
 ![Robot Head Final Product](https://github.com/HariComputes/Robot-Head/blob/main/Images/IMG-20230408-WA0000.jpg?raw=true "Robot Head")
@@ -12,6 +14,28 @@ Types of technologies used:
 Software PWM
 1-Wire
 Serial communication
+
+---
+
+Current functionality:
+Can tell the time.
+Mouth lights up different colours.
+Has a fun light sequence when you turn it on/off with the keyswitch.
+Shows you temperature from it's "antennae"
+
+Future plans:
+To be decided
+
+Capabilities/features:
+Motion sensor
+input power type sensors
+5 buttons
+1 keyswitch
+dual/redundant power inputs
+all lights are pwm controlled
+RGBW mouth
+Internet connected
+tm1637 4 digit 7 segment display
 
 ---
 
