@@ -9,6 +9,7 @@ import threading
 import temperature
 import tm1637
 import rgb_toggle_state
+import light_sensor_current
 
 #GPIO Initial setup
 GPIO.setmode(GPIO.BCM) # Set the GPIO pin naming mode
@@ -41,6 +42,7 @@ whitem = 8
 ditr = 0
 lightstate = 0
 #Display = tm1637.TM1637(23,24,tm1637.BRIGHT_TYPICAL)
+lightsensormode = 0
 
 #GPIO Resistor and pin setup
 GPIO.setup(Button1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -99,6 +101,23 @@ while True:
 		if GPIO.input(Button3) == GPIO.LOW:
 			lightstate = 0
 			rgb_toggle_state.mouthlight(lightstate)
+		if GPIO.input(Button4) == GPIO.LOW:
+			if lightsensormode == 1:
+				lightsensormode = 0
+			elif lightsensormode == 0:
+				lightsensormode = 1
+		if lightsensormode == 1:
+			if light_sensor_current.rc_time(Light_Sensor) > 1000000:
+				rgb_toggle_state.mouthlight_PWM(lightstate, 130)
+			elif light_sensor_current.rc_time(Light_Sensor) > 100000 and light_sensor_current.rc_time(Light_Sensor) < 1000000:
+				rgb_toggle_state.mouthlight_PWM(lightstate, 30)
+			elif light_sensor_current.rc_time(Light_Sensor) < 10000 and light_sensor_current.rc_time(Light_Sensor) > 5000:
+				rgb_toggle_state.mouthlight_PWM(lightstate, 5)
+			elif light_sensor_current.rc_time(Light_Sensor) < 5000:
+				rgb_toggle_state.mouthlight_PWM(lightstate, 0)
+			
+				
+			
 	elif GPIO.input(Switch1) == GPIO.HIGH:
 			light_effects.eyes_off()
 			light_effects.buttons_off()

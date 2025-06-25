@@ -96,6 +96,77 @@ def mouthlight(mode):
 
 
 
+def mouthlight_PWM(mode, PWM):
+	if mode == 0:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, 0)
+		pi.set_PWM_dutycycle(greenm, 0)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 1:
+		pi.set_PWM_dutycycle(redm, PWM)
+		pi.set_PWM_dutycycle(bluem, 0)
+		pi.set_PWM_dutycycle(greenm, 0)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 2:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, PWM)
+		pi.set_PWM_dutycycle(greenm, 0)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 3:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, 0)
+		pi.set_PWM_dutycycle(greenm, PWM)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 4:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, 0)
+		pi.set_PWM_dutycycle(greenm, 0)
+		pi.set_PWM_dutycycle(whitem, PWM)
+	elif mode == 5:
+		pi.set_PWM_dutycycle(redm, PWM)
+		pi.set_PWM_dutycycle(bluem, PWM)
+		pi.set_PWM_dutycycle(greenm, 0)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 6:
+		pi.set_PWM_dutycycle(redm, PWM)
+		pi.set_PWM_dutycycle(bluem, 0)
+		pi.set_PWM_dutycycle(greenm, PWM)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 7:
+		pi.set_PWM_dutycycle(redm, PWM)
+		pi.set_PWM_dutycycle(bluem, 0)
+		pi.set_PWM_dutycycle(greenm, 0)
+		pi.set_PWM_dutycycle(whitem, PWM)
+	elif mode == 8:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, PWM)
+		pi.set_PWM_dutycycle(greenm, PWM)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 9:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, PWM)
+		pi.set_PWM_dutycycle(greenm, 0)
+		pi.set_PWM_dutycycle(whitem, PWM)
+	elif mode == 10:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, 0)
+		pi.set_PWM_dutycycle(greenm, PWM)
+		pi.set_PWM_dutycycle(whitem, PWM)
+	elif mode == 11:
+		pi.set_PWM_dutycycle(redm, PWM)
+		pi.set_PWM_dutycycle(bluem, PWM)
+		pi.set_PWM_dutycycle(greenm, PWM)
+		pi.set_PWM_dutycycle(whitem, 0)
+	elif mode == 12:
+		pi.set_PWM_dutycycle(redm, PWM)
+		pi.set_PWM_dutycycle(bluem, PWM)
+		pi.set_PWM_dutycycle(greenm, PWM)
+		pi.set_PWM_dutycycle(whitem, PWM)
+	elif mode == 13:
+		pi.set_PWM_dutycycle(redm, 0)
+		pi.set_PWM_dutycycle(bluem, PWM)
+		pi.set_PWM_dutycycle(greenm, PWM)
+		pi.set_PWM_dutycycle(whitem, PWM)
 
 
 
