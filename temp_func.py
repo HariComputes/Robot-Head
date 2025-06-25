@@ -91,7 +91,8 @@ while True:
 			if lightstate == 13:
 				lightstate = 0
 			lightstate = lightstate + 1
-			rgb_toggle_state.mouthlight(lightstate)
+			if lightsensormode == 0:
+				rgb_toggle_state.mouthlight(lightstate)
 		if GPIO.input(Button1) == GPIO.LOW:
 			temper = temperature.read_temp()
 			dispout = [ int(temper / 10), temper % 10, "deg", "C"]
