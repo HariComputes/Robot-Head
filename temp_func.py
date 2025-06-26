@@ -1,11 +1,12 @@
-from multiprocessing import Process, Array
+#from multiprocessing import Process, Array
 import os # Gives Python access to Linux commands
 import time # Proves time related commands
 import RPi.GPIO as GPIO # Gives Python access to the GPIO pins
 import pigpio
 import clock
 import light_effects
-import threading
+#import threading
+import multiprocessing
 import temperature
 import tm1637
 import rgb_toggle_state
@@ -15,6 +16,7 @@ import light_sensor_current
 GPIO.setmode(GPIO.BCM) # Set the GPIO pin naming mode
 GPIO.setwarnings(False) # Suppress warnings
 pi = pigpio.pi()
+
 
 #Variable setup
 Button1 = 12
@@ -43,6 +45,10 @@ ditr = 0
 lightstate = 0
 #Display = tm1637.TM1637(23,24,tm1637.BRIGHT_TYPICAL)
 lightsensormode = 0
+#clockproc = threading.Thread(target=clock.clock, name="Clock", args=(1,))
+#mp = multiprocessing.get_context('spawn')
+brightness_check = 0
+
 
 #GPIO Resistor and pin setup
 GPIO.setup(Button1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -71,7 +77,8 @@ GPIO.setup(EyeR, GPIO.OUT)
 while True:
 	if GPIO.input(Switch1) == GPIO.LOW:
 		if ditr == 0:
-			p = threading.Thread(target=light_effects.dwr, name="eyes", args=(0.5, 5, 10))
+			#p = threading.Thread(target=light_effects.dwr, name="eyes", args=(0.5, 5, 10))
+			p = multiprocessing.Process(target=light_effects.dwr, name="eyes", args=(0.5, 5, 10))
 			p.start()
 			light_effects.pulse(0.0005)
 			light_effects.pulse(0.0005)		
@@ -82,7 +89,14 @@ while True:
 			light_effects.buttons_on(255)
 			light_effects.eyes_on(10)
 			ditr = 1
-		clock.clock(1)
+
+		clockproc = multiprocessing.Process(target=clock.clock, name="Clock", args=(1,))
+		clockproc.start()
+		#clock.clock(1)
+		#lp = threading.Thread(target=light_sensor_current.rc_time, name="Nightlight", args=(Light_Sensor,))
+		sensor_results_queue = multiprocessing.Queue()
+		lp = multiprocessing.Process(target=light_sensor_current.rc_time, name="Nightlight", args=(Light_Sensor,sensor_results_queue))
+		lp.start()
 		#if GPIO.input(pir) == 1:
 		#	pi.set_PWM_dutycycle(redm, 55)
 		#elif GPIO.input(pir) == 0:
@@ -91,31 +105,64 @@ while True:
 			if lightstate == 13:
 				lightstate = 0
 			lightstate = lightstate + 1
-			if lightsensormode == 0:
-				rgb_toggle_state.mouthlight(lightstate)
+			rgb_toggle_state.mouthlight_PWM(lightstate, 255)
 		if GPIO.input(Button1) == GPIO.LOW:
 			temper = temperature.read_temp()
 			dispout = [ int(temper / 10), temper % 10, "deg", "C"]
+			clockproc.terminate()
 			clock.clock(0)
 			disp.set_values(dispout)
 			time.sleep(5)
 		if GPIO.input(Button3) == GPIO.LOW:
 			lightstate = 0
-			rgb_toggle_state.mouthlight(lightstate)
+			rgb_toggle_state.mouthlight_PWM(lightstate, 255)
 		if GPIO.input(Button4) == GPIO.LOW:
 			if lightsensormode == 1:
 				lightsensormode = 0
 			elif lightsensormode == 0:
 				lightsensormode = 1
-		if lightsensormode == 1:
-			if light_sensor_current.rc_time(Light_Sensor) > 1000000:
-				rgb_toggle_state.mouthlight_PWM(lightstate, 130)
-			elif light_sensor_current.rc_time(Light_Sensor) > 100000 and light_sensor_current.rc_time(Light_Sensor) < 1000000:
-				rgb_toggle_state.mouthlight_PWM(lightstate, 30)
-			elif light_sensor_current.rc_time(Light_Sensor) < 10000 and light_sensor_current.rc_time(Light_Sensor) > 5000:
-				rgb_toggle_state.mouthlight_PWM(lightstate, 5)
-			elif light_sensor_current.rc_time(Light_Sensor) < 5000:
-				rgb_toggle_state.mouthlight_PWM(lightstate, 0)
+		results_queue = multiprocessing.Queue()
+		light_intensity = sensor_results_queue.get()
+		if lightsensormode == 1: 
+			if lightstate <= 4:
+				if light_intensity > 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 130)
+				elif light_intensity > 10000 and light_intensity < 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 30)
+				elif light_intensity < 10000 and light_intensity > 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 5)
+				elif light_intensity < 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 0)
+			elif lightstate > 4 and lightstate < 11:
+				if light_intensity > 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 65)
+				elif light_intensity > 10000 and light_intensity < 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 15)
+				elif light_intensity < 10000 and light_intensity > 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 2)
+				elif light_intensity < 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 0)
+			elif lightstate == 11 or lightstate == 13:
+				if light_intensity > 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 42)
+				elif light_intensity > 10000 and light_intensity < 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 10)
+				elif light_intensity < 10000 and light_intensity > 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 2)
+				elif light_intensity < 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 0)
+			elif lightstate == 12:
+				if light_intensity > 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 33)
+				elif light_intensity > 10000 and light_intensity < 1000000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 8)
+				elif light_intensity < 10000 and light_intensity > 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 1)
+				elif light_intensity < 5000:
+					rgb_toggle_state.mouthlight_PWM(lightstate, 0)
+
+
+
 			
 				
 			
@@ -123,6 +170,7 @@ while True:
 			light_effects.eyes_off()
 			light_effects.buttons_off()
 			pi.set_PWM_dutycycle(redm, 0)
+			clockproc.terminate()
 			clock.clock(0)
 			ditr = 0
 

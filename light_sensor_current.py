@@ -9,10 +9,14 @@ __license__ = "GPL"
 #GPIO.setmode(GPIO.BOARD)
 GPIO.setmode(GPIO.BCM)
 #define the pin that goes to the circuit
+import multiprocessing
+
 #pin_to_circuit = 13
 pin_to_circuit = 27
 
-def rc_time(pin_to_circuit):
+
+
+def rc_time(pin_to_circuit, queue):
     count = 0
   
     #Output on the pin for 
@@ -27,6 +31,7 @@ def rc_time(pin_to_circuit):
     while (GPIO.input(pin_to_circuit) == GPIO.LOW):
         count += 1
 
+    queue.put(count)
     return count
 
 #print(rc_time(pin_to_circuit))
